@@ -3,10 +3,10 @@ const redis = require('redis')
 const connectRedis = require('connect-redis')
 const session = require('express-session');
 const cors = require('cors');
-const { postgresConnect, getUserByUsername } = require('./services/db.service');
+const { postgresConnect } = require('./services/db.service');
 const { Authenticate, Authorize } = require('./middleware/auth');
 const { CreateUser } = require('./services/user.service');
-const { getGraphById, makeGraph, countGames, getAllGames } = require('./services/graph.service');
+const { getGraphById, makeGraph, getAllGames } = require('./services/graph.service');
 
 const main = async () => {
     // uses json and allows cors
@@ -45,7 +45,7 @@ const main = async () => {
     const port = process.env.PORT || 8080;
     app.listen(port, () => console.log(`app listening on http://localhost:${port}`) );
 
-    // initialize the postgres connectionl
+    // initialize the postgres connection
     postgresConnect()
 }
 
