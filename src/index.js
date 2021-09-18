@@ -3,7 +3,7 @@ const redis = require('redis')
 const connectRedis = require('connect-redis')
 const session = require('express-session');
 const cors = require('cors');
-const { postgresConnect, migrations } = require('./services/db.service');
+const { postgresConnect, migrations, getUserByUsername } = require('./services/db.service');
 const { Authenticate, Authorize } = require('./middleware/auth');
 const { CreateUser } = require('./services/user.service');
 
@@ -40,11 +40,12 @@ const main = async () => {
     app.post('/graph', Authorize, (req, res) => {
         let nodeList = req.body.nodeList;
         
-        //nodeList =  {
+        //nodeList =  [
         //   {URL, timespent, list of adjacent nodes (ID), node ID},
         //   {},
-        //}
-        dbSaveGraph(nodeList);
+        //]
+        var user = getUserByUsername(req.session.username)
+        dbSaveGraph(user.id, nodeList);
     });
 
     app.get('/auth', Authenticate)

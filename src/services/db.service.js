@@ -4,17 +4,6 @@ const postgresClient = new Client({
     connectionString: process.env.POSTGRES_CONNECTION_STRING
 })
 
-module.exports.migrations = async () => { 
-    let migrationsToDo = 
-        `CREATE TABLE users (
-            id serial primary key,
-            username varchar(64) not null unique,
-            password varchar(128) not null
-        )`
-
-    postgresClient.query(migrationsToDo).then(_ => null).catch(err => err)
-}
-
 module.exports.postgresConnect = async () => {
     console.log(process.env.POSTGRES_CONNECTION_STRING)
     return postgresClient.connect()
@@ -38,10 +27,18 @@ module.exports.getUserByUsername = async (username) =>
     .then((res) => [null, res.rows])
     .catch(err => [err, null])
 
-module.exports.dbSaveGraph = async(nodeList) => 
+// promise that just returns an error
+module.exports.dbSaveGraph = async(userId, nodeList) => 
     //Save graph to db here
+    postgresClient.query(
+        'INSERT INTO games(user_id, nodes) VALUES ($1, $2)',
+        [userId, nodeList]
+    )
+    .then((res) => null)
+    .catch((err) => err)
 
-module.exports.dbGetGraph = async () => 
+module.exports.dbGetGraph = async (userId) => 
     //Return graph from db here?
-
+    postgresClient.query(
+    )
 
