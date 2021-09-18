@@ -4,15 +4,15 @@ services:
   backend:
     image: ehuan2/htn-rabbithole:latest
     ports:
-      - 443:443
+      - 8080:8080
     command: ["npm", "start"]
 
-  mongo:
-    image: mongo:latest
+  redis:
+    image: redis:latest
     ports:
-      - 8081
+      - 6379
     volumes:
-      - mongo-data:/mongo-data
+      - redis-data:/redis-data
 
 volumes:
-  mongo-data:
+  redis-data:

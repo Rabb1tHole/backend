@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "This is the backend stuff...",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rabb1tHole/backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rabb1tHole/backend/issues"
+  },
+  "homepage": "https://github.com/Rabb1tHole/backend#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "redis": "^4.0.0-rc.1"
+  }
+}
