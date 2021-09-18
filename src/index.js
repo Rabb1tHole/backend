@@ -3,9 +3,10 @@ const redis = require('redis')
 const connectRedis = require('connect-redis')
 const session = require('express-session');
 const cors = require('cors');
-const { postgresConnect, migrations, getUserByUsername } = require('./services/db.service');
+const { postgresConnect, getUserByUsername } = require('./services/db.service');
 const { Authenticate, Authorize } = require('./middleware/auth');
 const { CreateUser } = require('./services/user.service');
+const { getGraph, makeGraph, countGames } = require('./services/graph.service');
 
 const main = async () => {
     // uses json and allows cors
@@ -33,20 +34,9 @@ const main = async () => {
         res.json({ message: 'Docker is easy 🐳' }) 
     );
 
-    app.get('/graph', Authorize, (req, res) => {
-        res.send(dbGetGraph()); //send graph 
-    });
-
-    app.post('/graph', Authorize, (req, res) => {
-        let nodeList = req.body.nodeList;
-        
-        //nodeList =  [
-        //   {URL, timespent, list of adjacent nodes (ID), node ID},
-        //   {},
-        //]
-        var user = getUserByUsername(req.session.username)
-        dbSaveGraph(user.id, nodeList);
-    });
+    app.get('/graph', Authorize, countGames);
+    app.get('/graph/:gameId', Authorize, getGraph);
+    app.post('/graph', Authorize, makeGraph);
 
     app.get('/auth', Authenticate)
     app.post('/user', CreateUser)

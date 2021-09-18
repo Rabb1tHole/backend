@@ -37,8 +37,11 @@ module.exports.dbSaveGraph = async(userId, nodeList) =>
     .then((res) => null)
     .catch((err) => err)
 
-module.exports.dbGetGraph = async (userId) => 
-    //Return graph from db here?
+module.exports.dbGetGraph = async (userId, gameId) => 
     postgresClient.query(
+        'SELECT nodes FROM games WHERE user_id = $1 AND id = $2',
+        [userId, gameId]
     )
+    .then((res) => [null,res.rows]) 
+    .catch(err => [err,null])
 
