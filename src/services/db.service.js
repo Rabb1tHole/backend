@@ -38,7 +38,10 @@ module.exports.getUserByUsername = async (username) =>
     .then((res) => [null, res.rows])
     .catch(err => [err, null])
 
+module.exports.dbSaveGraph = async(nodeList) => 
+    //Save graph to db here
+
 module.exports.dbGetGraph = async () => 
-    //save to database
+    //Return graph from db here?
 
 
