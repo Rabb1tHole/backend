@@ -35,14 +35,14 @@ const main = async () => {
 
     app.post('/graph', Authorize, (req, res) => {
         let nodeList = req.body.nodeList;
-
         //nodeList =  {
-        //   {URL, timespent, list of adjacent nodes}
+        //   {URL, timespent, list of adjacent nodes (ID), node ID},
+        //   {},
         //}
-        dbGetGraph();
+        dbGetGraph(nodeList);
     });
 
-    //app.get('/auth', Authenticate, Login)
+    app.get('/auth', Authenticate, Login)
 
     // execution of app
     const port = process.env.PORT || 8080;
