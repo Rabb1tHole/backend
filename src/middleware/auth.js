@@ -33,10 +33,10 @@ module.exports.Authorize = async (req, res, next) => {
 }
 
 module.exports.Logout = (req, res) => {
-    req.session.destroy((err) => {})
-    res.send("hello there")
+    req.session.destroy((err) => {console.log(err)})
+    res.sendStatus(200)
+    res.end()
 }
-
 
 async function validatePermission(session) {
     return session.loggedIn
