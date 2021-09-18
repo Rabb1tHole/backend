@@ -34,6 +34,11 @@ const main = async () => {
         res.json({ message: 'Docker is easy 🐳' }) 
     );
 
+    app.post('/graph', Authorize, (req, res) => {
+        // todo: parse through the request
+        // todo: call a function somewhere
+    })
+
     app.get('/auth', Authenticate, Login)
 
     // execution of app
