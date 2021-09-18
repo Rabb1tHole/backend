@@ -39,9 +39,19 @@ module.exports.getUserByUsername = async (username) =>
     .catch(err => [err, null])
 
 module.exports.dbSaveGraph = async(nodeList) => 
-    //Save graph to db here
+    postgresClient.query(
+        'INSERT INTO games(username, nodelist) VALUES ($1,$2)'
+        [username,nodeList]
+    )
+    .then((res) => [null,res.rows[0].id])
+    .catch(err => [err,null])
 
-module.exports.dbGetGraph = async () => 
-    //Return graph from db here?
+module.exports.dbGetGraph = async (username) => 
+    postgresClient.query(
+        'SELECT * FROM games WHERE username = $1',
+        [username]
+    )
+    .then((res) => [null,res.rows]) 
+    .catch(err => [err,null])
 
 
