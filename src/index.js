@@ -5,6 +5,7 @@ const session = require('express-session');
 const cors = require('cors');
 const { postgresConnect, migrations } = require('./services/db.service');
 const { Authenticate, Authorize } = require('./middleware/auth');
+const { CreateUser } = require('./services/user.service');
 
 const main = async () => {
     // uses json and allows cors
@@ -34,6 +35,7 @@ const main = async () => {
     );
 
     app.get('/auth', Authenticate)
+    app.post('/user', CreateUser)
 
     // execution of app
     const port = process.env.PORT || 8080;

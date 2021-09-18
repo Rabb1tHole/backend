@@ -1,20 +1,25 @@
+const { ValidateUser } = require("../services/user.service")
+
 module.exports.Authenticate = async (req, res) => {
     if (req.session.loggedIn) {
         // just refresh it
         req.session.regenerate(function(err) {
             console.log(err)
         })
+        res.end()
         return
     }
 
-    const [userId, err] = await validateUser(req.body.username, req.body.password)
+    const [userId, err] = await ValidateUser(req.body.username, req.body.password)
     if (!err) {
         req.session.loggedIn = true
         req.session.username = userId
         res.sendStatus(200)
+        res.end()
     } else {
         console.log(err)
         res.sendStatus(401)
+        res.end()
     }
 }
 
@@ -32,10 +37,6 @@ module.exports.Logout = (req, res) => {
     res.send("hello there")
 }
 
-// returns a userId followed by error
-async function validateUser(username, password) {
-    return ["hellothere", null]
-}
 
 async function validatePermission(session) {
     return session.loggedIn
