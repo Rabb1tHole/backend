@@ -6,13 +6,4 @@ services:
     ports:
       - 8080:8080
     command: ["npm", "start"]
-
-  redis:
-    image: redis:latest
-    ports:
-      - 6379
-    volumes:
-      - redis-data:/redis-data
-
-volumes:
-  redis-data:
+    env_file: .env
