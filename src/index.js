@@ -33,13 +33,18 @@ const main = async () => {
         res.json({ message: 'Docker is easy 🐳' }) 
     );
 
+    app.get('/graph', Authorize, (req, res) => {
+        res.send(dbGetGraph()); //send graph 
+    });
+
     app.post('/graph', Authorize, (req, res) => {
         let nodeList = req.body.nodeList;
+        
         //nodeList =  {
         //   {URL, timespent, list of adjacent nodes (ID), node ID},
         //   {},
         //}
-        dbGetGraph(nodeList);
+        dbSaveGraph(nodeList);
     });
 
     app.get('/auth', Authenticate, Login)
