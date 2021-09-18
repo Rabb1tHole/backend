@@ -28,24 +28,27 @@ const main = async () => {
             maxAge: 1000*60*60*24*7
         }
     }))
-
     // routes
     app.get('/', Authorize, (req, res) => 
         res.json({ message: 'Docker is easy 🐳' }) 
     );
 
     app.post('/graph', Authorize, (req, res) => {
-        // todo: parse through the request
-        // todo: call a function somewhere
-    })
+        let nodeList = req.body.nodeList;
 
-    app.get('/auth', Authenticate, Login)
+        //nodeList =  {
+        //   {URL, timespent, list of adjacent nodes}
+        //}
+        dbGetGraph();
+    });
+
+    //app.get('/auth', Authenticate, Login)
 
     // execution of app
     const port = process.env.PORT || 8080;
     app.listen(port, () => console.log(`app listening on http://localhost:${port}`) );
 
-    // initialize the postgres connection
+    // initialize the postgres connectionl
     postgresConnect()
 }
 
