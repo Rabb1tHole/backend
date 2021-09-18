@@ -8,7 +8,7 @@ run:
 	docker-compose up
 
 run-db:
-	docker-compose -f docker-compose.db.yml up -d db redis 
+	docker-compose up -d db redis 
 
 db-psql:
 	docker exec -it backend_db_1 /bin/sh
