@@ -24,18 +24,28 @@ module.exports.getUserByUsername = async (username) =>
         'SELECT * FROM users WHERE username = $1',
         [username]
     )
-    .then((res) => [null, res.rows])
+    .then(res => {
+        if (res.rows.length == 0) {
+            return [new Error("no users found"), null]
+        }
+        return [null, res.rows]
+    })
     .catch(err => [err, null])
 
 // promise that just returns an error
-module.exports.dbSaveGraph = async(userId, nodeList) => 
+module.exports.dbSaveGraph = async(userId, nodeList) =>  {
     //Save graph to db here
-    postgresClient.query(
+    console.log(nodeList)
+    return postgresClient.query(
         'INSERT INTO games(user_id, nodes) VALUES ($1, $2)',
-        [userId, nodeList]
+        [userId, JSON.stringify(nodeList)]
     )
-    .then((res) => null)
-    .catch((err) => err)
+    .then((res) => console.log(res))
+    .catch((err) => {
+        console.log(err)
+        return err
+    })
+}
 
 module.exports.dbGetGraph = async (userId, gameId) => 
     postgresClient.query(
@@ -45,3 +55,18 @@ module.exports.dbGetGraph = async (userId, gameId) =>
     .then((res) => [null,res.rows]) 
     .catch(err => [err,null])
 
+module.exports.dbGetAllGraph = async (userId) =>
+    postgresClient.query(
+        'SELECT id FROM games WHERE user_id = $1',
+        [userId]
+    )
+    .then((res) => [null,res.rows]) 
+    .catch(err => [err,null])
+
+module.exports.dbGetCount = async (userId) =>
+    postgresClient.query(
+        'SELECT count(*) FROM games WHERE user_id = $1',
+        [userId]
+    )
+    .then((res) => [null, res.rows])
+    .catch(err => [err, null])

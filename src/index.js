@@ -6,7 +6,7 @@ const cors = require('cors');
 const { postgresConnect, getUserByUsername } = require('./services/db.service');
 const { Authenticate, Authorize } = require('./middleware/auth');
 const { CreateUser } = require('./services/user.service');
-const { getGraph, makeGraph, countGames } = require('./services/graph.service');
+const { getGraphById, makeGraph, countGames, getAllGames } = require('./services/graph.service');
 
 const main = async () => {
     // uses json and allows cors
@@ -34,8 +34,8 @@ const main = async () => {
         res.json({ message: 'Docker is easy 🐳' }) 
     );
 
-    app.get('/graph', Authorize, countGames);
-    app.get('/graph/:gameId', Authorize, getGraph);
+    app.get('/graph', Authorize, getAllGames);
+    app.get('/graph/:gameId', Authorize, getGraphById);
     app.post('/graph', Authorize, makeGraph);
 
     app.get('/auth', Authenticate)

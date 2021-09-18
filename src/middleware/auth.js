@@ -10,10 +10,10 @@ module.exports.Authenticate = async (req, res) => {
         return
     }
 
-    const [userId, err] = await ValidateUser(req.body.username, req.body.password)
+    const [_, err] = await ValidateUser(req.body.username, req.body.password)
     if (!err) {
         req.session.loggedIn = true
-        req.session.username = userId
+        req.session.username = req.body.username
         res.sendStatus(200)
         res.end()
     } else {
