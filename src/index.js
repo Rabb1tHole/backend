@@ -3,9 +3,10 @@ const redis = require('redis')
 const connectRedis = require('connect-redis')
 const session = require('express-session');
 const cors = require('cors');
-const { postgresConnect, migrations } = require('./services/db.service');
+const { postgresConnect } = require('./services/db.service');
 const { Authenticate, Authorize } = require('./middleware/auth');
 const { CreateUser } = require('./services/user.service');
+const { getGraphById, makeGraph, getAllGames } = require('./services/graph.service');
 
 const main = async () => {
     // uses json and allows cors
@@ -28,11 +29,14 @@ const main = async () => {
             maxAge: 1000*60*60*24*7
         }
     }))
-
     // routes
     app.get('/', Authorize, (req, res) => 
         res.json({ message: 'Docker is easy 🐳' }) 
     );
+
+    app.get('/graph', Authorize, getAllGames);
+    app.get('/graph/:gameId', Authorize, getGraphById);
+    app.post('/graph', Authorize, makeGraph);
 
     app.get('/auth', Authenticate)
     app.post('/user', CreateUser)

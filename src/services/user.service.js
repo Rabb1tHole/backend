@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs")
 module.exports.CreateUser = async (req, res) => {
     const {username, password} = req.body;
     const hashedPassword = await bcrypt.hash(password, parseInt(process.env.PASSWORD_SALT));
-    const [err, sessionId] = await dbRegisterUser(username, hashedPassword)
+    const [err, _] = await dbRegisterUser(username, hashedPassword)
     if (err) {
         console.log(err)
         res.sendStatus(400)

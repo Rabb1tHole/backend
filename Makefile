@@ -15,3 +15,7 @@ db-psql:
 
 push:
 	docker push ehuan2/htn-rabbithole:latest
+
+db-migrate:
+	docker cp setup/migrations.sql backend_db_1:/migrations.sql
+	docker exec -it backend_db_1 psql -U postgres -f migrations.sql
