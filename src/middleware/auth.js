@@ -1,25 +1,30 @@
-module.exports.Authenticate = (req, res, next) => {
-    if (validateUser(req.body.username, req.body.password)) {
-        next()
+module.exports.Authenticate = async (req, res) => {
+    if (req.session.loggedIn) {
+        // just refresh it
+        req.session.regenerate(function(err) {
+            console.log(err)
+        })
+        return
+    }
+
+    const [userId, err] = await validateUser(req.body.username, req.body.password)
+    if (!err) {
+        req.session.loggedIn = true
+        req.session.username = userId
+        res.sendStatus(200)
     } else {
+        console.log(err)
         res.sendStatus(401)
     }
 }
 
-
-module.exports.Authorize = (req, res, next) => {
-    if (validatePermission(req.session)) {
+module.exports.Authorize = async (req, res, next) => {
+    const isAllowed = await validatePermission(req.session)
+    if (isAllowed) {
         next()
     } else {
         res.sendStatus(403) // unauthorized
     }
-}
-
-module.exports.Login = (req, res) => {
-    req.session.loggedIn = true
-    req.session.username = res.locals.username
-    console.log(req.session)
-    res.send("hello there")
 }
 
 module.exports.Logout = (req, res) => {
@@ -27,10 +32,11 @@ module.exports.Logout = (req, res) => {
     res.send("hello there")
 }
 
-function validateUser(username, password) {
-    return true
+// returns a userId followed by error
+async function validateUser(username, password) {
+    return ["hellothere", null]
 }
 
-function validatePermission(session) {
+async function validatePermission(session) {
     return session.loggedIn
 }

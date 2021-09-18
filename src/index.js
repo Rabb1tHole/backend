@@ -4,7 +4,6 @@ const connectRedis = require('connect-redis')
 const session = require('express-session');
 const cors = require('cors');
 const { postgresConnect, migrations } = require('./services/db.service');
-const bodyParser = require('body-parser');
 const { Authenticate, Authorize } = require('./middleware/auth');
 
 const main = async () => {
@@ -34,7 +33,7 @@ const main = async () => {
         res.json({ message: 'Docker is easy 🐳' }) 
     );
 
-    app.get('/auth', Authenticate, Login)
+    app.get('/auth', Authenticate)
 
     // execution of app
     const port = process.env.PORT || 8080;
