@@ -34,9 +34,9 @@ const main = async () => {
         res.json({ message: 'Docker is easy 🐳' }) 
     );
 
-    app.get('/graph', Authorize, getAllGames);
-    app.get('/graph/:gameId', Authorize, getGraphById);
-    app.post('/graph', Authorize, makeGraph);
+    app.post('/graph', Authorize, getAllGames);
+    app.post('/graph/:gameId', Authorize, getGraphById);
+    app.post('/makeGraph', Authorize, makeGraph);
 
     app.post('/auth', Authenticate)
     app.post('/user', CreateUser)

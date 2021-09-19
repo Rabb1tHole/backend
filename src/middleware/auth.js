@@ -6,6 +6,7 @@ module.exports.Authenticate = async (req, res) => {
         req.session.regenerate(function(err) {
             console.log(err)
         })
+        res.send(JSON.stringify(req.session))
         res.end()
         return
     }
@@ -14,6 +15,7 @@ module.exports.Authenticate = async (req, res) => {
     if (!err) {
         req.session.loggedIn = true
         req.session.username = req.body.username
+        res.send({"session": JSON.stringify(req.session) })
         res.sendStatus(200)
         res.end()
     } else {
@@ -24,7 +26,7 @@ module.exports.Authenticate = async (req, res) => {
 }
 
 module.exports.Authorize = async (req, res, next) => {
-    const isAllowed = await validatePermission(req.session)
+    const isAllowed = await validatePermission(JSON.parse(req.body.session))
     if (isAllowed) {
         next()
     } else {
