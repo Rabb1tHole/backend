@@ -38,7 +38,7 @@ const main = async () => {
     app.get('/graph/:gameId', Authorize, getGraphById);
     app.post('/graph', Authorize, makeGraph);
 
-    app.get('/auth', Authenticate)
+    app.post('/auth', Authenticate)
     app.post('/user', CreateUser)
 
     // execution of app
