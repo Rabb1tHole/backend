@@ -30,7 +30,7 @@ const main = async () => {
         }
     }))
     // routes
-    app.get('/', Authorize, (req, res) => 
+    app.post('/', Authorize, (req, res) => 
         res.json({ message: 'Docker is easy 🐳' }) 
     );
 
