@@ -7,7 +7,7 @@ const { dbGetGraph, dbSaveGraph, dbGetCount, getUserByUsername, dbGetAllGraph } 
 module.exports.getGraphById = async (req, res) => {
     const gameId = req.params.gameId
     console.log(gameId)
-    const [err, user] = await getUserByUsername(req.session.username)
+    const [err, user] = await getUserByUsername(req.body.username)
     if (err) {
         res.sendStatus(400);
         res.end()
@@ -25,7 +25,7 @@ module.exports.getGraphById = async (req, res) => {
 }
 
 module.exports.getAllGames = async (req, res) => {
-    const [err, user] = await getUserByUsername(req.session.username)
+    const [err, user] = await getUserByUsername(req.body.username)
     if (err) {
         res.sendStatus(400)
         res.end()
@@ -46,7 +46,7 @@ module.exports.getAllGames = async (req, res) => {
 module.exports.makeGraph = async (req, res) => {
     const nodeList = req.body.nodeList;
     console.log(req.session)
-    let [err, user] = await getUserByUsername(req.session.username)
+    let [err, user] = await getUserByUsername(req.body.username)
     if (err) {
         console.log(err)
         res.sendStatus(400);
